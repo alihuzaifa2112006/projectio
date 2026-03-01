@@ -1,10 +1,12 @@
 const mongoose = require('mongoose');
-
-try { require('dotenv').config({ path: '.env.local' }) } catch (_) {}
-try { require('dotenv').config() } catch (_) {}
+const path = require('path');
 
 const connectDB = async () => {
-    // Get URI at runtime - supports multiple env names for Vercel
+    // Load .env at runtime (Next.js loads it too, but dotenv ensures it)
+    const root = path.resolve(process.cwd());
+    require('dotenv').config({ path: path.join(root, '.env.local') });
+    require('dotenv').config({ path: path.join(root, '.env') });
+
     const uri = process.env.Mongoose_URI || process.env.MONGODB_URI || process.env.DATABASE_URL
     if (!uri || typeof uri !== 'string' || uri.trim() === '') {
         const msg = 'MongoDB URI missing! Vercel me add karo: Settings > Environment Variables > Mongoose_URI (ya MONGODB_URI)'

@@ -7,12 +7,10 @@ const corsHeaders = {
   'Access-Control-Max-Age': '86400',
 }
 
-export function middleware(request) {
-  // Handle CORS preflight
+export function proxy(request) {
   if (request.method === 'OPTIONS') {
     return new Response(null, { status: 204, headers: corsHeaders })
   }
-
   const response = NextResponse.next()
   Object.entries(corsHeaders).forEach(([key, value]) => {
     response.headers.set(key, value)

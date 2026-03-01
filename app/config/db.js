@@ -1,20 +1,42 @@
 const mongoose = require('mongoose');
-const dotenv = require('dotenv');
+const path = require('path');
+const fs = require('fs');
 
-dotenv.config();
-
-// mongodb+srv://alihuzaifa1917_db_user:x52gwIZplLKomf2U@clustorforprojectmanage.t3olvxm.mongodb.net/
-const Mongoose_URL = process.env.Mongoose_URI
-
-const connectDB = async () => {
-    try {
-        const connection = await mongoose.connect(Mongoose_URL)
-        console.log(`Connected to MongoDB: ${connection.connection.host}`)
-
-    } catch (error) {
-        console.error(`Error connecting to MongoDB: ${error.message}`)
-        process.exit(1)
+function loadEnvFallback() {
+    const root = path.join(__dirname, '..', '..');
+    const envPath = path.join(root, '.env');
+    if (fs.existsSync(envPath)) {
+        const content = fs.readFileSync(envPath, 'utf8');
+        content.split('\n').forEach(line => {
+            const m = line.match(/^([^#=]+)=(.*)$/);
+            if (m) {
+                const key = m[1].trim();
+                const val = m[2].trim().replace(/^["']|["']$/g, '');
+                if (!process.env[key] || process.env[key] === '') process.env[key] = val;
+            }
+        });
     }
 }
 
-module.exports = connectDB
+const connectDB = async () => {
+    const root = path.join(__dirname, '..', '..');
+    require('dotenv').config({ path: path.join(root, '.env.local'), override: true });
+    require('dotenv').config({ path: path.join(root, '.env'), override: true });
+    loadEnvFallback();
+
+    const uri = process.env.MONGODB_URI || process.env.Mongoose_URI || process.env.DATABASE_URL;
+    if (!uri || typeof uri !== 'string' || uri.trim() === '') {
+        const msg = 'MongoDB URI missing! Add MONGODB_URI in .env or Vercel Environment Variables';
+        console.error(msg);
+        throw new Error(msg);
+    }
+    try {
+        const connection = await mongoose.connect(uri.trim());
+        console.log(`Connected to MongoDB: ${connection.connection.host}`);
+    } catch (error) {
+        console.error(`Error connecting to MongoDB: ${error.message}`);
+        throw error;
+    }
+};
+
+module.exports = connectDB;

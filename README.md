@@ -43,5 +43,6 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 **Troubleshooting:**
 - **MongoDB URI undefined:** Ensure env vars are set in Vercel and redeploy. For local dev, ensure `.env` exists in project root with `MONGODB_URI=...`
 - **ERR_CONNECTION_REFUSED:** Usually means the server crashed due to missing env. Fix env loading first, then restart.
+- **"buffering timed out" / 500 on Vercel:** In MongoDB Atlas → **Network Access** → add `0.0.0.0/0` (Allow from anywhere). Vercel uses dynamic IPs.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.

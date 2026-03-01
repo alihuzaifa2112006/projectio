@@ -19,6 +19,8 @@ function loadEnvFallback() {
 }
 
 const connectDB = async () => {
+    if (mongoose.connection.readyState === 1) return;
+
     const root = path.join(__dirname, '..', '..');
     require('dotenv').config({ path: path.join(root, '.env.local'), override: true });
     require('dotenv').config({ path: path.join(root, '.env'), override: true });
@@ -31,8 +33,11 @@ const connectDB = async () => {
         throw new Error(msg);
     }
     try {
-        const connection = await mongoose.connect(uri.trim());
-        console.log(`Connected to MongoDB: ${connection.connection.host}`);
+        await mongoose.connect(uri.trim(), {
+            serverSelectionTimeoutMS: 20000,
+            connectTimeoutMS: 20000,
+        });
+        console.log(`Connected to MongoDB: ${mongoose.connection.host}`);
     } catch (error) {
         console.error(`Error connecting to MongoDB: ${error.message}`);
         throw error;

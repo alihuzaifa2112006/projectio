@@ -41,7 +41,7 @@ export default function EmployeePage() {
 
   const fetchEmployees = () => {
     setGridLoading(true)
-    api.get('/api/employee')
+    api.get('/employee')
       .then((res) => setAllEmployees(res.data.employees || []))
       .catch((err) => console.log(err))
       .finally(() => setGridLoading(false))
@@ -61,7 +61,7 @@ export default function EmployeePage() {
       if (editingId) {
         const payload = { id: editingId, name: formData.name, designation: formData.designation, salary: formData.salary, email: formData.email, phone: formData.phone }
         if (formData.password) payload.password = formData.password
-        const res = await api.put('/api/employee', payload)
+        const res = await api.put('/employee', payload)
         if (res.status === 200) {
           setOpenDialog(false)
           setFormData(INITIAL_FORM)
@@ -69,7 +69,7 @@ export default function EmployeePage() {
           fetchEmployees()
         }
       } else {
-        const res = await api.post('/api/employee', formData)
+        const res = await api.post('/employee', formData)
         if (res.status === 201) {
           setOpenDialog(false)
           setFormData(INITIAL_FORM)
@@ -88,7 +88,7 @@ export default function EmployeePage() {
     if (!deleteId) return
     setLoading(true)
     try {
-      const res = await api.delete('/api/employee', { data: { id: deleteId } })
+      const res = await api.delete('/employee', { data: { id: deleteId } })
       if (res.status === 200) {
         setOpenConfirm(false)
         setDeleteId(null)

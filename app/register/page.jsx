@@ -14,7 +14,7 @@ import {
   IconButton,
 } from '@mui/material'
 import { Person, Email, Phone, Lock, Visibility, VisibilityOff } from '@mui/icons-material'
-import axios from 'axios'
+import api from '../../lib/api'
 
 const SIDEBAR_DARK = '#14532d'
 const ACCENT_GREEN = '#16a34a'
@@ -51,9 +51,8 @@ export default function RegisterPage() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     setError('')
-    const baseUrl = process.env.NEXT_PUBLIC_PORT || ''
     try {
-      const res = await axios.post(`${baseUrl}/api/auth/register`, {
+      const res = await api.post('/auth/register', {
         ...formData,
         role: 'admin',
       })

@@ -14,7 +14,7 @@ import {
   IconButton,
 } from '@mui/material'
 import { Email, Lock, Visibility, VisibilityOff } from '@mui/icons-material'
-import axios from 'axios'
+import api from '../../lib/api'
 
 const SIDEBAR_DARK = '#14532d'
 const ACCENT_GREEN = '#16a34a'
@@ -36,9 +36,8 @@ export default function LoginPage() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     setError('')
-    const baseUrl = process.env.NEXT_PUBLIC_PORT || ''
     try {
-      const res = await axios.post(`${baseUrl}/api/auth/Login`, formData)
+      const res = await api.post('/auth/Login', formData)
       if (res.data?.token) {
         localStorage.setItem('token', res.data.token)
         localStorage.setItem('user', JSON.stringify(res.data.user))

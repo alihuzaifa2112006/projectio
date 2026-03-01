@@ -43,11 +43,11 @@ export default function TeamPage() {
 
   const fetchTeams = () => {
     setGridLoading(true)
-    api.get('/api/team').then((res) => setAllTeams(res.data.teams || [])).catch((err) => console.log(err)).finally(() => setGridLoading(false))
+    api.get('/team').then((res) => setAllTeams(res.data.teams || [])).catch((err) => console.log(err)).finally(() => setGridLoading(false))
   }
 
   const fetchEmployees = () => {
-    api.get('/api/employee').then((res) => setAllEmployees(res.data.employees || [])).catch((err) => console.log(err))
+    api.get('/employee').then((res) => setAllEmployees(res.data.employees || [])).catch((err) => console.log(err))
   }
 
   useEffect(() => {
@@ -65,7 +65,7 @@ export default function TeamPage() {
     try {
       const payload = { name: formData.name, assignedWork: formData.assignedWork, employees: formData.employees }
       if (editingId) {
-        const res = await api.put('/api/team', { id: editingId, ...payload })
+        const res = await api.put('/team', { id: editingId, ...payload })
         if (res.status === 200) {
           setOpenDialog(false)
           setFormData(INITIAL_FORM)
@@ -73,7 +73,7 @@ export default function TeamPage() {
           fetchTeams()
         }
       } else {
-        const res = await api.post('/api/team', payload)
+        const res = await api.post('/team', payload)
         if (res.status === 201) {
           setOpenDialog(false)
           setFormData(INITIAL_FORM)
@@ -91,7 +91,7 @@ export default function TeamPage() {
     if (!deleteId) return
     setLoading(true)
     try {
-      const res = await api.delete('/api/team', { data: { id: deleteId } })
+      const res = await api.delete('/team', { data: { id: deleteId } })
       if (res.status === 200) {
         setOpenConfirm(false)
         setDeleteId(null)

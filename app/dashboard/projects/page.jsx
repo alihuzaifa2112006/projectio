@@ -43,11 +43,11 @@ export default function ProjectsPage() {
 
   const fetchProjects = () => {
     setGridLoading(true)
-    api.get('/api/project').then((res) => setAllProjects(res.data.projects || [])).catch((err) => console.log(err)).finally(() => setGridLoading(false))
+    api.get('/project').then((res) => setAllProjects(res.data.projects || [])).catch((err) => console.log(err)).finally(() => setGridLoading(false))
   }
 
   const fetchEmployees = () => {
-    api.get('/api/employee').then((res) => setAllEmployees(res.data.employees || [])).catch((err) => console.log(err))
+    api.get('/employee').then((res) => setAllEmployees(res.data.employees || [])).catch((err) => console.log(err))
   }
 
   useEffect(() => {
@@ -65,7 +65,7 @@ export default function ProjectsPage() {
     try {
       const payload = { name: formData.name, description: formData.description, status: formData.status, employees: formData.employees }
       if (editingId) {
-        const res = await api.put('/api/project', { id: editingId, ...payload })
+        const res = await api.put('/project', { id: editingId, ...payload })
         if (res.status === 200) {
           setOpenDialog(false)
           setFormData(INITIAL_FORM)
@@ -73,7 +73,7 @@ export default function ProjectsPage() {
           fetchProjects()
         }
       } else {
-        const res = await api.post('/api/project', payload)
+        const res = await api.post('/project', payload)
         if (res.status === 201) {
           setOpenDialog(false)
           setFormData(INITIAL_FORM)
@@ -91,7 +91,7 @@ export default function ProjectsPage() {
     if (!deleteId) return
     setLoading(true)
     try {
-      const res = await api.delete('/api/project', { data: { id: deleteId } })
+      const res = await api.delete('/project', { data: { id: deleteId } })
       if (res.status === 200) {
         setOpenConfirm(false)
         setDeleteId(null)

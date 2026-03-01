@@ -29,14 +29,14 @@ export default function BillingPage() {
 
   const fetchBilling = () => {
     setLoading(true)
-    api.get('/api/billing').then((res) => { setList(res.data.list || []); setMonth(res.data.month); setYear(res.data.year) }).catch((err) => console.log(err)).finally(() => setLoading(false))
+    api.get('/billing').then((res) => { setList(res.data.list || []); setMonth(res.data.month); setYear(res.data.year) }).catch((err) => console.log(err)).finally(() => setLoading(false))
   }
 
   useEffect(() => fetchBilling(), [])
 
   const handleManagerConfirm = async (employeeId, checked) => {
     try {
-      await api.put('/api/billing', { employeeId, managerConfirmed: checked })
+      await api.put('/billing', { employeeId, managerConfirmed: checked })
       setList((prev) => prev.map((r) => (r._id === employeeId ? { ...r, managerConfirmed: checked } : r)))
     } catch (err) {
       console.log(err)
@@ -45,7 +45,7 @@ export default function BillingPage() {
 
   const handleEmployeeConfirm = async (employeeId, checked) => {
     try {
-      await api.put('/api/billing', { employeeId, employeeConfirmed: checked })
+      await api.put('/billing', { employeeId, employeeConfirmed: checked })
       setList((prev) => prev.map((r) => (r._id === employeeId ? { ...r, employeeConfirmed: checked } : r)))
     } catch (err) {
       console.log(err)

@@ -47,10 +47,10 @@ export default function DashboardPage() {
       setLoading(true)
       try {
         const [empRes, projRes, teamRes, billRes] = await Promise.all([
-          api.get('/api/employee'),
-          api.get('/api/project'),
-          api.get('/api/team'),
-          api.get('/api/billing'),
+          api.get('/employee'),
+          api.get('/project'),
+          api.get('/team'),
+          api.get('/billing'),
         ])
         setEmployees(empRes.data?.employees || [])
         setProjects(projRes.data?.projects || [])

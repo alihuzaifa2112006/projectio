@@ -39,7 +39,6 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
    - `MONGODB_URI` = your MongoDB connection string (recommended)
    - `Mongoose_URI` or `DATABASE_URL` = alternative names (also supported)
    - `JWT_SECRET` = your secret key for JWT tokens
-   - `NEXT_PUBLIC_PORT` = your Vercel app URL (e.g. `https://your-app.vercel.app`)
 
 **Troubleshooting:**
 - **MongoDB URI undefined:** Ensure env vars are set in Vercel and redeploy. For local dev, ensure `.env` exists in project root with `MONGODB_URI=...`
